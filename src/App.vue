@@ -1,29 +1,35 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <h1>object.initialProperty = "{{ object.initialProperty }}"</h1>
+    <button @click="chageInitialProperty">change object.initialProperty</button>
+
+    <h1>object.newProperty = "{{ object.newProperty }}"</h1>
+    <button @click="chageNewProperty">change object.newProperty</button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import HelloWorld from './components/HelloWorld.vue'
+import store from './store'
 
-@Component({
-  components: {
-    HelloWorld
+export default {
+  computed: {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    object: () => store.state.object // Vetur is wrong, ignore him
+  },
+  methods: {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    chageInitialProperty: () =>
+      store.dispatch('onSetObjectProperty', {
+        prop: 'initialProperty',
+        val: new Date().toISOString()
+      }),
+
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    chageNewProperty: () =>
+      store.dispatch('onSetObjectProperty', {
+        prop: 'newProperty',
+        val: new Date().toISOString()
+      })
   }
-})
-export default class App extends Vue {}
-</script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
-</style>
+</script>
